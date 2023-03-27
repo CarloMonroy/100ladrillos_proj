@@ -3,14 +3,13 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const Users = require("../models/users_model");
 const logger = require("../utils/logger");
+const user_controller = require("../controllers/user_controller");
+const controller = new user_controller();
 
 router.use(bodyParser.urlencoded({ extended: true }));
-const controller = require("../controllers/user_controller");
-
 router.post("/create", async (req, res) => {
   try {
-    const user = await controller.create(res, req.body);
-    res.status(200).send(user);
+    const user = controller.create(res, req.body);
   } catch (err) {
     logger.error(err);
     res
