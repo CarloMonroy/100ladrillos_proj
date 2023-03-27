@@ -1,13 +1,15 @@
 const logger = require("../utils/logger");
+const base_controller = require("./base_controller");
 
 const bricks_model = require("../models/bricks_model");
 
-class bricksController {
+class bricksController extends base_controller {
   constructor() {
+    super();
     this.bricks_model = bricks_model;
   }
 
-  get_all(res) {
+  get_all(req, res) {
     try {
       this.bricks_model.findAll().then((bricks) => {
         res.status(200).send(bricks);

@@ -41,7 +41,7 @@ class userController extends base_controller {
                 .then((user) => {
                   // return sucess status and user jwt
                   var token = jwt.sign(
-                    { id: user.id, email: user.email },
+                    { id: user.id, email: user.email, admin: user.admin },
                     process.env.SECRET,
                     {}
                   );
@@ -73,7 +73,7 @@ class userController extends base_controller {
           this.comparePassword(data.password, user.password).then((result) => {
             if (result) {
               var token = jwt.sign(
-                { id: user.id, email: user.email },
+                { id: user.id, email: user.email, admin: user.admin },
                 process.env.SECRET,
                 {}
               );
