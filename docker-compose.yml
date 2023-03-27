@@ -7,6 +7,9 @@ services:
       - "7080:3000"
     volumes:
       - .:/src/backend
+    depends_on:
+      mysql:
+        condition: service_started
 
   mysql:
     image: mysql:5.7
@@ -18,4 +21,4 @@ services:
       MYSQL_USER: test
       MYSQL_PASSWORD: test
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./data/db:/data/db
