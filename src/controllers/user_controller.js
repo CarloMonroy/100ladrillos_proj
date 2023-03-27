@@ -40,9 +40,12 @@ class userController extends base_controller {
                 )
                 .then((user) => {
                   // return sucess status and user jwt
-                  var token = jwt.sign({ id: 1 }, process.env.SECRET, {});
-                  logger.info("token: " + token);
-                  res.status(200).send({ info: "User created", token: token });
+                  var token = jwt.sign(
+                    { id: user.id, email: user.email },
+                    process.env.SECRET,
+                    {}
+                  );
+                  res.status(200).send({ auth: true, token: token });
                 });
             });
           }
@@ -51,7 +54,7 @@ class userController extends base_controller {
       logger.error(err);
       res
         .status(500)
-        .send("There was a problem adding the information to the database");
+        .send("There was a problem adding the information to the database.  2");
     }
   }
 }
