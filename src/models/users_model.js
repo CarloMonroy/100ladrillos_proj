@@ -23,6 +23,11 @@ const users = sequelize.define("users", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  admin: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 users.sync();
