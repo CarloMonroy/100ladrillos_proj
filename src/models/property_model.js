@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
+const bricks = require("./bricks_model");
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -10,27 +11,18 @@ const sequelize = new Sequelize(
   }
 );
 
-const users = sequelize.define("users", {
+const properties = sequelize.define("properties", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  email: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  admin: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
   },
 });
 
-users.sync();
+properties.sync();
 
-module.exports = users;
+module.exports = properties;

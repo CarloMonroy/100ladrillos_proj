@@ -31,6 +31,7 @@ try {
 
 //add routes
 app.use("/user", require("./routes/user_routes"));
+app.use("/bricks", require("./routes/bricks_routes"));
 
 // use morgan middleware
 app.use(morganMiddleware);
