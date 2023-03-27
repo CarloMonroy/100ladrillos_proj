@@ -21,12 +21,9 @@ router.post("/create", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const user = await controller.login(res, req.body);
-    res.status(200).send(user);
   } catch (err) {
     logger.error(err);
-    res
-      .status(500)
-      .send("There was a problem adding the information to the database.");
+    res.status(500).send("there whas a problem loggin in");
   }
 });
 

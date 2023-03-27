@@ -57,6 +57,37 @@ class userController extends base_controller {
         .send("There was a problem adding the information to the database.  2");
     }
   }
+
+  login(res, data) {
+    // logs user and returnds jwt
+    try {
+      this.user_model
+        .findOne({
+          where: { email: data.email },
+        })
+        .then((user) => {
+          if (!user) {
+            return res.status(404).send("No user found.");
+          }
+
+          this.comparePassword(data.password, user.password).then((result) => {
+            if (result) {
+              var token = jwt.sign(
+                { id: user.id, email: user.email },
+                process.env.SECRET,
+                {}
+              );
+              res.status(200).send({ auth: true, token: token });
+            } else {
+              res.status(401).send("Invalid password");
+            }
+          });
+        });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).send("There was a problem logging in.");
+    }
+  }
 }
 
 module.exports = userController;
