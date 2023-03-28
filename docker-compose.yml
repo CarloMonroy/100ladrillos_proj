@@ -6,9 +6,18 @@ services:
     ports:
       - "7080:3000"
     volumes:
-      - .:/src/backend
+      - .:/backend
     depends_on:
       mysql:
+        condition: service_started
+
+  client:
+    platform: linux/amd64
+    build: ./client
+    ports:
+      - "7081:3001"
+    depends_on:
+      web:
         condition: service_started
 
   mysql:

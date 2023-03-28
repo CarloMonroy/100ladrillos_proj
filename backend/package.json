@@ -25,5 +25,8 @@
     "sequelize": "^6.28.1",
     "toad-scheduler": "^2.2.0",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.0"
   }
 }
