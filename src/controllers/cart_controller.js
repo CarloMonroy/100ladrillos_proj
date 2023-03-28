@@ -9,15 +9,47 @@ class cartController extends base_controller {
     this.inUserCartModel = inUserCartModel;
     this.user_model = user_model;
   }
+  // with this version the response is ordered by brick then property
+  // get_cart(req, res) {
+  //   try {
+  //     const user = req.user;
+  //     this.user_model
+  //       .findOne({
+  //         where: {
+  //           id: user.id,
+  //         },
+  //         include: [
+  //           {
+  //             model: this.inUserCartModel,
+  //             include: [
+  //               {
+  //                 model: bricks_model,
+  //                 include: [
+  //                   {
+  //                     model: property_model,
+  //                   },
+  //                 ],
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       })
+  //       .then((cart) => {
+  //         res.status(200).send(cart);
+  //       });
+  //   } catch (err) {
+  //     logger.error(err);
+  //     res.status(500).send("There was a problem in the cart controller.");
+  //   }
+  // }
 
+  // with this version the response is ordered by property then brick
   get_cart(req, res) {
     try {
       const user = req.user;
       this.user_model
         .findOne({
-          where: {
-            id: user.id,
-          },
+          where: { id: user.id },
           include: [
             {
               model: this.inUserCartModel,
@@ -35,7 +67,20 @@ class cartController extends base_controller {
           ],
         })
         .then((cart) => {
-          res.status(200).send(cart);
+          const cart_items = cart.in_user_carts;
+          const cart_items_by_property = {};
+          cart_items.forEach((item) => {
+            const property_id = item.brick.property.id;
+            const property_name = item.brick.property.name;
+            if (!cart_items_by_property[property_id]) {
+              cart_items_by_property[property_name] = {
+                property_id: property_id,
+                bricks: [],
+              };
+            }
+            cart_items_by_property[property_name].bricks.push(item);
+          });
+          res.status(200).send(cart_items_by_property);
         });
     } catch (err) {
       logger.error(err);
