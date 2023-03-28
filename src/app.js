@@ -33,6 +33,7 @@ try {
 app.use("/user", require("./routes/user_routes"));
 app.use("/bricks", require("./routes/bricks_routes"));
 app.use("/property", require("./routes/property_routes"));
+app.use("/cart", require("./routes/cart_routes"));
 
 // use morgan middleware
 app.use(morganMiddleware);

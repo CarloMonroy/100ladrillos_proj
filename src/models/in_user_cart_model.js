@@ -10,30 +10,28 @@ const sequelize = new Sequelize(
   }
 );
 
-const users = sequelize.define("users", {
+const inUserCart = sequelize.define("in_user_cart", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  email: {
-    type: DataTypes.STRING,
+  user_id: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
-  password: {
-    type: DataTypes.STRING,
+  brick_id: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
-  admin: {
-    type: DataTypes.BOOLEAN,
+  quantity: {
+    type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: false,
   },
 });
 
-users.hasMany(require("./in_user_cart_model"), { foreignKey: "user_id" });
-users.hasMany(require("./bricks_model"), { foreignKey: "user_id" });
+inUserCart.hasMany(require("./bricks_model"), { foreignKey: "id" });
 
-users.sync();
+inUserCart.sync();
 
-module.exports = users;
+module.exports = inUserCart;

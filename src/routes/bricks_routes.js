@@ -1,5 +1,5 @@
-const expres = require("express");
-const router = expres.Router();
+const express = require("express");
+const router = express.Router();
 const bodyParser = require("body-parser");
 const logger = require("../utils/logger");
 const bricks_controller = require("../controllers/bricks_controller");
@@ -10,7 +10,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/all_bricks", controller.authenticateToken, async (req, res) => {
   try {
-    const bricks = await controller.get_all(req, res);
+    const bricks = controller.get_all(req, res);
   } catch (err) {
     logger.error(err);
     res.status(500).send("There was a problem finding the bricks.");

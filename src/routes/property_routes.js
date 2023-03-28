@@ -11,7 +11,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/all", controller.authenticateToken, async (req, res) => {
   try {
-    const property = await controller.get_all(req, res);
+    const property = controller.get_all(req, res);
   } catch (err) {
     logger.error(err);
     res.status(500).send("There was a problem finding the property.");
