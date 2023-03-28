@@ -271,9 +271,12 @@ class cartController extends base_controller {
                     item.brick.on_sale = 1;
                     item.brick.save();
                   });
+                  scheduler.removeById(user.id);
                 });
             });
-            const job = new CronJob({ cronExpression: "*/3 * * * * *", task });
+            const job = new CronJob({ cronExpression: "*/3 * * * * *" }, task, {
+              id: user.id,
+            });
             scheduler.addCronJob(job);
             res.status(200).send("Bricks bought");
           });
