@@ -30,7 +30,7 @@ const inUserCart = sequelize.define("in_user_cart", {
   },
 });
 
-inUserCart.hasMany(require("./bricks_model"), { foreignKey: "id" });
+inUserCart.belongsTo(require("./bricks_model"), { foreignKey: "brick_id" });
 
 inUserCart.sync();
 

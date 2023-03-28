@@ -27,4 +27,13 @@ router.post("", controller.authenticateToken, async (req, res) => {
   }
 });
 
+router.delete("", controller.authenticateToken, async (req, res) => {
+  try {
+    const cart = controller.remove_all_items_from_cart(req, res);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).send("There was a problem setting the cart.");
+  }
+});
+
 module.exports = router;

@@ -20,12 +20,15 @@ class cartController extends base_controller {
           },
           include: [
             {
-              model: bricks_model,
-              as: "bricks",
+              model: this.inUserCartModel,
               include: [
                 {
-                  model: property_model,
-                  as: "property",
+                  model: bricks_model,
+                  include: [
+                    {
+                      model: property_model,
+                    },
+                  ],
                 },
               ],
             },
@@ -67,11 +70,28 @@ class cartController extends base_controller {
         .destroy({
           where: {
             user_id: user.id,
-            brick_id: body.brick_id,
           },
         })
         .then((cart) => {
           res.status(200).send(cart);
+        });
+    } catch (err) {
+      logger.error(err);
+      res.sendStatus(500);
+    }
+  }
+
+  remove_all_items_from_cart(req, res) {
+    const user = req.user;
+    try {
+      this.inUserCartModel
+        .destroy({
+          where: {
+            user_id: user.id,
+          },
+        })
+        .then((cart) => {
+          res.status(200).send("Cart deleted");
         });
     } catch (err) {
       logger.error(err);
