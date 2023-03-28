@@ -36,4 +36,13 @@ router.delete("", controller.authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/checkout", controller.authenticateToken, async (req, res) => {
+  try {
+    const cart = controller.checkout(req, res);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).send("There was a problem setting the cart.");
+  }
+});
+
 module.exports = router;
