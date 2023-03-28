@@ -205,8 +205,8 @@ class cartController extends base_controller {
             },
           });
           //cancel cronjob
-          let my_job = cron.scheduledJobs[user.id];
-          my_job.cancel();
+
+          scheduler.removeById(user.id);
         });
     } catch (err) {
       logger.error(err);
@@ -274,7 +274,7 @@ class cartController extends base_controller {
                   scheduler.removeById(user.id);
                 });
             });
-            const job = new CronJob({ cronExpression: "*/3 * * * * *" }, task, {
+            const job = new CronJob({ cronExpression: "*/1 * * * *" }, task, {
               id: user.id,
             });
             scheduler.addCronJob(job);
