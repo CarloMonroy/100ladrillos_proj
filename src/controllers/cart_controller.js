@@ -274,7 +274,7 @@ class cartController extends base_controller {
                   scheduler.removeById(user.id);
                 });
             });
-            const job = new CronJob({ cronExpression: "*/1 * * * *" }, task, {
+            const job = new CronJob({ cronExpression: "*/3 * * * *" }, task, {
               id: user.id,
             });
             scheduler.addCronJob(job);
