@@ -23,6 +23,9 @@ const properties = sequelize.define("properties", {
   },
 });
 
+properties.hasMany(bricks, { foreignKey: "property_id" });
+bricks.belongsTo(properties, { foreignKey: "property_id" });
+
 properties.sync();
 
 module.exports = properties;

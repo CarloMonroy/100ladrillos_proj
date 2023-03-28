@@ -34,8 +34,6 @@ const bricks = sequelize.define("bricks", {
   },
 });
 
-bricks.belongsTo(require("./property_model"), { foreignKey: "property_id" });
-
 bricks.sync();
 
 module.exports = bricks;

@@ -9,11 +9,30 @@ class propertyController extends base_controller {
     this.bricks_model = bricks_model;
   }
 
+  // get_all(req, res) {
+  //   try {
+  //     this.property_model.findAll().then((property) => {
+  //       res.status(200).send(property);
+  //     });
+  //   } catch (err) {
+  //     logger.error(err);
+  //     res.status(500).send("There was a problem finding the property.");
+  //   }
+  // }
+
   get_all(req, res) {
     try {
-      this.property_model.findAll().then((property) => {
-        res.status(200).send(property);
-      });
+      this.property_model
+        .findAll({
+          include: [
+            {
+              model: this.bricks_model,
+            },
+          ],
+        })
+        .then((property) => {
+          res.status(200).send(property);
+        });
     } catch (err) {
       logger.error(err);
       res.status(500).send("There was a problem finding the property.");
