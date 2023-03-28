@@ -3,6 +3,9 @@ const inUserCartModel = require("../models/in_user_cart_model");
 const user_model = require("../models/users_model");
 const bricks_model = require("../models/bricks_model");
 const property_model = require("../models/property_model");
+const logger = require("../utils/logger");
+const { ToadScheduler, SimpleIntervalJob, Task } = require("toad-scheduler");
+const scheduler = new ToadScheduler();
 class cartController extends base_controller {
   constructor() {
     super();
@@ -11,46 +14,14 @@ class cartController extends base_controller {
     this.bricks_model = bricks_model;
   }
   // with this version the response is ordered by brick then property
-  get_cart(req, res) {
-    try {
-      const user = req.user;
-      this.user_model
-        .findOne({
-          where: {
-            id: user.id,
-          },
-          include: [
-            {
-              model: this.inUserCartModel,
-              include: [
-                {
-                  model: bricks_model,
-                  include: [
-                    {
-                      model: property_model,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        })
-        .then((cart) => {
-          res.status(200).send(cart);
-        });
-    } catch (err) {
-      logger.error(err);
-      res.status(500).send("There was a problem in the cart controller.");
-    }
-  }
-
-  // with this version the response is ordered by property then brick
   // get_cart(req, res) {
   //   try {
   //     const user = req.user;
   //     this.user_model
   //       .findOne({
-  //         where: { id: user.id },
+  //         where: {
+  //           id: user.id,
+  //         },
   //         include: [
   //           {
   //             model: this.inUserCartModel,
@@ -68,26 +39,58 @@ class cartController extends base_controller {
   //         ],
   //       })
   //       .then((cart) => {
-  //         const cart_items = cart.in_user_carts;
-  //         const cart_items_by_property = {};
-  //         cart_items.forEach((item) => {
-  //           const property_id = item.brick.property.id;
-  //           const property_name = item.brick.property.name;
-  //           if (!cart_items_by_property[property_id]) {
-  //             cart_items_by_property[property_name] = {
-  //               property_id: property_id,
-  //               bricks: [],
-  //             };
-  //           }
-  //           cart_items_by_property[property_name].bricks.push(item);
-  //         });
-  //         res.status(200).send(cart_items_by_property);
+  //         res.status(200).send(cart);
   //       });
   //   } catch (err) {
   //     logger.error(err);
   //     res.status(500).send("There was a problem in the cart controller.");
   //   }
   // }
+
+  // with this version the response is ordered by property then brick
+  get_cart(req, res) {
+    try {
+      const user = req.user;
+      this.user_model
+        .findOne({
+          where: { id: user.id },
+          include: [
+            {
+              model: this.inUserCartModel,
+              include: [
+                {
+                  model: bricks_model,
+                  include: [
+                    {
+                      model: property_model,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+        .then((cart) => {
+          const cart_items = cart.in_user_carts;
+          const cart_items_by_property = {};
+          cart_items.forEach((item) => {
+            const property_id = item.brick.property.id;
+            const property_name = item.brick.property.name;
+            if (!cart_items_by_property[property_id]) {
+              cart_items_by_property[property_name] = {
+                property_id: property_id,
+                bricks: [],
+              };
+            }
+            cart_items_by_property[property_name].bricks.push(item);
+          });
+          res.status(200).send(cart_items_by_property);
+        });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).send("There was a problem in the cart controller.");
+    }
+  }
 
   add_to_cart(req, res) {
     const body = req.body;
@@ -158,7 +161,7 @@ class cartController extends base_controller {
     }
   }
 
-  checkout(req, res) {
+  buy_bricks(req, res) {
     const user = req.user;
     try {
       // get bricks from cart
@@ -184,18 +187,99 @@ class cartController extends base_controller {
         .then((cart) => {
           //change user_id to new user
           const cart_items = cart.in_user_carts;
+          // if any brick is not on sale, then the cart cannot be checked out
+          cart_items.forEach((item) => {
+            if (!item.brick.on_sale) {
+              res.status(400).send("Brick not on sale");
+            }
+          });
           cart_items.forEach((item) => {
             item.user_id = user.id;
             item.save();
           });
-          res.status(200).send("Cart checked out");
+          res.status(200).send("bricks bought");
           //delete cart
           this.inUserCartModel.destroy({
             where: {
               user_id: user.id,
             },
           });
+          //cancel cronjob
+          let my_job = cron.scheduledJobs[user.id];
+          my_job.cancel();
         });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).send("There was a problem in the cart controller.");
+    }
+  }
+
+  checkout(req, res) {
+    const user = req.user;
+    try {
+      if (req.body.ts === "Y") {
+        // change cart bricks on_sale to false
+        this.user_model
+          .findOne({
+            where: { id: user.id },
+            include: [
+              {
+                model: this.inUserCartModel,
+                include: [
+                  {
+                    model: bricks_model,
+                    include: [
+                      {
+                        model: property_model,
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          })
+          .then((cart) => {
+            const cart_items = cart.in_user_carts;
+            cart_items.forEach((item) => {
+              item.brick.on_sale = 0;
+              item.brick.save();
+            });
+            //job after 3 minutes
+            const task = new Task(user.id, () => {
+              this.user_model
+                .findOne({
+                  where: { id: user.id },
+                  include: [
+                    {
+                      model: this.inUserCartModel,
+                      include: [
+                        {
+                          model: bricks_model,
+                          include: [
+                            {
+                              model: property_model,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                })
+                .then((cart) => {
+                  const cart_items = cart.in_user_carts;
+                  cart_items.forEach((item) => {
+                    item.brick.on_sale = 1;
+                    item.brick.save();
+                  });
+                });
+            });
+            const job = new SimpleIntervalJob({ seconds: 10 }, task);
+            scheduler.addSimpleIntervalJob(job);
+            res.status(200).send("Bricks bought");
+          });
+      } else {
+        res.status(400).send("You must agree to the terms and conditions");
+      }
     } catch (err) {
       logger.error(err);
       res.status(500).send("There was a problem in the cart controller.");
