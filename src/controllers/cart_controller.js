@@ -187,12 +187,7 @@ class cartController extends base_controller {
         .then((cart) => {
           //change user_id to new user
           const cart_items = cart.in_user_carts;
-          // if any brick is not on sale, then the cart cannot be checked out
-          cart_items.forEach((item) => {
-            if (!item.brick.on_sale) {
-              res.status(400).send("Brick not on sale");
-            }
-          });
+
           cart_items.forEach((item) => {
             item.user_id = user.id;
             item.save();
@@ -267,6 +262,12 @@ class cartController extends base_controller {
                 })
                 .then((cart) => {
                   const cart_items = cart.in_user_carts;
+                  // if any brick is not on sale, then the cart cannot be checked out
+                  cart_items.forEach((item) => {
+                    if (!item.brick.on_sale) {
+                      res.status(400).send("Brick not on sale");
+                    }
+                  });
                   cart_items.forEach((item) => {
                     item.brick.on_sale = 1;
                     item.brick.save();
@@ -278,7 +279,12 @@ class cartController extends base_controller {
               id: user.id,
             });
             scheduler.addCronJob(job);
-            res.status(200).send("Bricks bought");
+
+            res
+              .status(200)
+              .send(
+                "Bricks checked out, you have 3 minutes to complete the order"
+              );
           });
       } else {
         res.status(400).send("You must agree to the terms and conditions");

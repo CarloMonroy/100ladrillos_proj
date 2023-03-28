@@ -61,6 +61,7 @@ class propertyController extends base_controller {
               }
             }
           )
+
           .then((property) => {
             for (let i = 0; i < bricks_num; i++) {
               this.bricks_model.create({
