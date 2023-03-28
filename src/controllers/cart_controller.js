@@ -4,7 +4,7 @@ const user_model = require("../models/users_model");
 const bricks_model = require("../models/bricks_model");
 const property_model = require("../models/property_model");
 const logger = require("../utils/logger");
-const { ToadScheduler, SimpleIntervalJob, Task } = require("toad-scheduler");
+const { ToadScheduler, CronJob, Task } = require("toad-scheduler");
 const scheduler = new ToadScheduler();
 class cartController extends base_controller {
   constructor() {
@@ -273,8 +273,8 @@ class cartController extends base_controller {
                   });
                 });
             });
-            const job = new SimpleIntervalJob({ seconds: 10 }, task);
-            scheduler.addSimpleIntervalJob(job);
+            const job = new CronJob({ cronExpression: "*/3 * * * * *", task });
+            scheduler.addCronJob(job);
             res.status(200).send("Bricks bought");
           });
       } else {
