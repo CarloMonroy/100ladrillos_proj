@@ -1,5 +1,5 @@
 FROM node:lts-alpine
-WORKDIR ./src/backend
+WORKDIR /backend
 
 COPY package*.json ./
 RUN npm install

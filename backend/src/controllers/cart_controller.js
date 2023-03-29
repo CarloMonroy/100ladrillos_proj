@@ -127,19 +127,45 @@ class cartController extends base_controller {
   remove_from_cart(req, res) {
     const body = req.body;
     const user = req.user;
+
     try {
       this.inUserCartModel
         .destroy({
           where: {
             user_id: user.id,
+            id: req.params.id,
           },
         })
         .then((cart) => {
-          res.status(200).send(cart);
+          // send updated cart
+          this.user_model
+            .findOne({
+              where: {
+                id: user.id,
+              },
+              include: [
+                {
+                  model: this.inUserCartModel,
+                  include: [
+                    {
+                      model: bricks_model,
+                      include: [
+                        {
+                          model: property_model,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            })
+            .then((cart) => {
+              res.status(200).send(cart);
+            });
         });
     } catch (err) {
       logger.error(err);
-      res.sendStatus(500);
+      res.status(500).send("There was a problem in the cart controller.");
     }
   }
 

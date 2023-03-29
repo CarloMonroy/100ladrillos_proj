@@ -54,4 +54,14 @@ router.post("/checkout", controller.authenticateToken, async (req, res) => {
   }
 });
 
+// create a route to delete single item from cart
+router.delete("/item/:id", controller.authenticateToken, async (req, res) => {
+  try {
+    const cart = controller.remove_from_cart(req, res);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).send("There was a problem setting the cart.");
+  }
+});
+
 module.exports = router;

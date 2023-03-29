@@ -22,10 +22,11 @@ class propertyController extends base_controller {
 
   get_all(req, res) {
     try {
+      logger.info(req.params);
       this.property_model
         .findAndCountAll({
-          limit: parseInt(req.body.limit),
-          offset: parseInt(req.body.offset),
+          limit: parseInt(10),
+          offset: parseInt(0),
           include: [
             {
               model: this.bricks_model,
