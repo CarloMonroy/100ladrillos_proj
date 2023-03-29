@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "fc8b9daf-1cdc-46b5-9d12-4b8f9d887a63",
+		"name": "100Ladrillos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20444746"
+	},
+	"item": [
+		{
+			"name": "properties",
+			"item": [
+				{
+					"name": "get all properties",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbCIsImFkbWluIjpmYWxzZSwiaWF0IjoxNjgwMDQzMDQwfQ.4L-dsYy9EBgnDkvNmZttBt4s-9F-IDQ5LbIS3dZHdEk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "limit",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:7080/property/all",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"property",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNjgwMDUyMjcwfQ.DtV3l2QgxADU1X68vVSqENeMrorEZkSFiBdiJtxxK98",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bricks_num",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Propiedad 3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:7080/property/create",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"property",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bricks",
+			"item": [
+				{
+					"name": "get all bricks",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbCIsImFkbWluIjp0cnVlLCJpYXQiOjE2Nzk5NTk5ODR9.kYdv6oLwAaZZtmnYiuGAhCS_IgEfgx_NFYGbmeNyZvA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "limit",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "offset",
+									"value": "20",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:7080/bricks/all_bricks",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"bricks",
+								"all_bricks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "Get user cart",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbCIsImFkbWluIjp0cnVlLCJpYXQiOjE2Nzk5NTk5ODR9.kYdv6oLwAaZZtmnYiuGAhCS_IgEfgx_NFYGbmeNyZvA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7080/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add item to cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNjgwMDUyMjcwfQ.DtV3l2QgxADU1X68vVSqENeMrorEZkSFiBdiJtxxK98",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "bricks",
+									"value": "[{brick_id: 1, quantity: 2}, {brick_id: 2, quantity: 2}, {brick_id: 3, quantity: 3}]",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "brick_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:7080/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete all items in cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbCIsImFkbWluIjp0cnVlLCJpYXQiOjE2Nzk5NTk5ODR9.kYdv6oLwAaZZtmnYiuGAhCS_IgEfgx_NFYGbmeNyZvA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7080/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbCIsImFkbWluIjp0cnVlLCJpYXQiOjE2Nzk5NTk5ODR9.kYdv6oLwAaZZtmnYiuGAhCS_IgEfgx_NFYGbmeNyZvA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ts",
+									"value": "Y",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:7080/cart/checkout",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"cart",
+								"checkout"
+							],
+							"query": [
+								{
+									"key": "TS",
+									"value": "S",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buy cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbCIsImFkbWluIjp0cnVlLCJpYXQiOjE2Nzk5NTk5ODR9.kYdv6oLwAaZZtmnYiuGAhCS_IgEfgx_NFYGbmeNyZvA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7080/cart/buy",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"cart",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete item from cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNjgwMDUyMjcwfQ.DtV3l2QgxADU1X68vVSqENeMrorEZkSFiBdiJtxxK98",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:7080/cart/1",
+							"host": [
+								"localhost"
+							],
+							"port": "7080",
+							"path": [
+								"cart",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "email@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:7080/user/create",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "email@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:7080/user/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7080",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

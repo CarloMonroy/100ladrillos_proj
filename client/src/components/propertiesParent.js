@@ -13,7 +13,7 @@ function PropertyParent() {
 
   useEffect(() => {
     axios
-      .get("//localhost:3000/property/all", {
+      .get("//localhost:7080/property/all", {
         headers: { Authorization: `${localStorage.getItem("token")}` },
       })
       .then((response) => response.data.rows)
