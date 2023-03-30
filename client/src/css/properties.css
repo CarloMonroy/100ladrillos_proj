@@ -1,0 +1,39 @@
+.properties {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.property {
+  border: 1px solid black;
+  margin: 20px;
+  padding: 20px;
+}
+
+.property__title {
+  margin-top: 0;
+}
+
+.property__bricks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.brick {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.brick__name {
+  margin: 0;
+}
+
+.brick__add-to-cart {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}

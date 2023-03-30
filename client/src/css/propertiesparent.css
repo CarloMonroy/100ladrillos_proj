@@ -1,0 +1,82 @@
+/* propertyParent.css */
+.property-parent {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.property-parent__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.property-parent__title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.property-parent__cart {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.property-parent__cart-icon {
+  margin-right: 0.5rem;
+}
+
+.property-parent__cart-count {
+  background-color: #333;
+  color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+  line-height: 1.5rem;
+}
+
+/* propertiesComponent.css */
+.properties {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.properties__item {
+  width: calc(33.33% - 1rem);
+  margin: 0.5rem;
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.properties__item:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.properties__item-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.properties__item-price {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.properties__item-button {
+  display: inline-block;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}

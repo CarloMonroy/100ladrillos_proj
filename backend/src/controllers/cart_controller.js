@@ -112,7 +112,31 @@ class cartController extends base_controller {
                 quantity: body.quantity,
               })
               .then((cart) => {
-                res.status(200).send(cart);
+                //send updated cart
+                this.user_model
+                  .findOne({
+                    where: {
+                      id: user.id,
+                    },
+                    include: [
+                      {
+                        model: this.inUserCartModel,
+                        include: [
+                          {
+                            model: bricks_model,
+                            include: [
+                              {
+                                model: property_model,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  })
+                  .then((cart) => {
+                    res.status(200).send(cart);
+                  });
               });
           } else {
             res.status(400).send("Brick not on sale");

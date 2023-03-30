@@ -1,50 +1,23 @@
 import axios from "axios";
 import { useState } from "react";
+import "../css/properties.css";
 const querystring = require("querystring");
 
-function PropertiesComponent({ properties }) {
-  const [cartItems, setCartItems] = useState([]);
-  const handleCartChange = (newCart) => {
-    setCartItems(newCart);
-  };
-
-  function handleAddToCart(propertyId, brickId) {
-    // Make a post request to the API to add the selected brick to the cart
-    axios
-      .post(
-        "//localhost:7080/cart",
-        {
-          brick_id: brickId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("token")}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        // Update the cart items state with the new cart items returned by the API
-        setCartItems(data.in_user_carts);
-      });
-  }
-
+function PropertiesComponent({ onAddToCart, properties }) {
   return (
-    <div>
+    <div className="properties">
       {properties.map((property) => (
-        <div key={property.id}>
-          <h2>{property.name}</h2>
-          <ul>
+        <div className="property" key={property.id}>
+          <h2 className="property__title">{property.name}</h2>
+          <ul className="property__bricks">
             {property.bricks.slice(0, 5).map((brick) => (
-              <li key={brick.id}>
-                <p>{brick.name}</p>
-                <p>{brick.price}</p>
+              <li className="brick" key={brick.id}>
+                <p className="brick__name">{brick.name}</p>
+                <p className="brick__price">{brick.price}</p>
                 <button
+                  className="brick__add-to-cart"
                   onClick={() => {
-                    handleAddToCart(property.id, brick.id);
-                    handleCartChange(cartItems);
+                    onAddToCart(brick.id);
                   }}
                 >
                   Add to Cart
