@@ -25,8 +25,8 @@ class propertyController extends base_controller {
       logger.info(req.params);
       this.property_model
         .findAndCountAll({
-          limit: parseInt(10),
-          offset: parseInt(0),
+          limit: 10,
+          offset: 0,
           include: [
             {
               model: this.bricks_model,

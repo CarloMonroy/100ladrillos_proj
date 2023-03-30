@@ -5,7 +5,7 @@ const logger = require("./utils/logger");
 const { Sequelize } = require("sequelize");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 7080;
 
 dotenv.config();
 

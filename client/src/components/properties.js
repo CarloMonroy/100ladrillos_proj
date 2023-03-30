@@ -4,19 +4,23 @@ const querystring = require("querystring");
 
 function PropertiesComponent({ properties }) {
   const [cartItems, setCartItems] = useState([]);
+  const handleCartChange = (newCart) => {
+    setCartItems(newCart);
+  };
 
   function handleAddToCart(propertyId, brickId) {
     // Make a post request to the API to add the selected brick to the cart
     axios
       .post(
         "//localhost:7080/cart",
-        querystring.stringify({
-          bricks_id: brickId,
+        {
+          brick_id: brickId,
           quantity: 1,
-        }),
+        },
         {
           headers: {
             Authorization: `${localStorage.getItem("token")}`,
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         }
       )
@@ -37,7 +41,12 @@ function PropertiesComponent({ properties }) {
               <li key={brick.id}>
                 <p>{brick.name}</p>
                 <p>{brick.price}</p>
-                <button onClick={() => handleAddToCart(property.id, brick.id)}>
+                <button
+                  onClick={() => {
+                    handleAddToCart(property.id, brick.id);
+                    handleCartChange(cartItems);
+                  }}
+                >
                   Add to Cart
                 </button>
               </li>
