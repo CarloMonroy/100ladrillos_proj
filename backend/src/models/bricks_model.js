@@ -24,6 +24,10 @@ const bricks = sequelize.define("bricks", {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
+  buyer_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

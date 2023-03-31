@@ -1,0 +1,44 @@
+.order-confirmation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.order-confirmation button {
+  background-color: #ff00ff;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+  padding: 20px 50px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.order-confirmation button:hover {
+  background-color: #8b008b;
+}
+
+.confirmation-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff69b4;
+  border-radius: 20px;
+  padding: 50px;
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.confirmation-message img {
+  margin-top: 50px;
+  width: 400px;
+  height: 300px;
+}

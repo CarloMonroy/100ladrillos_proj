@@ -18,6 +18,15 @@ router.get("", controller.authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/final_cart", controller.authenticateToken, async (req, res) => {
+  try {
+    const cart = controller.get_final_cart(req, res);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).send("There was a problem finding the cart.");
+  }
+});
+
 router.post("", controller.authenticateToken, async (req, res) => {
   try {
     const cart = controller.add_to_cart(req, res);

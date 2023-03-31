@@ -6,6 +6,7 @@ const property_model = require("../models/property_model");
 const logger = require("../utils/logger");
 const { ToadScheduler, CronJob, Task } = require("toad-scheduler");
 const scheduler = new ToadScheduler();
+const { Op } = require("sequelize");
 class cartController extends base_controller {
   constructor() {
     super();
@@ -28,6 +29,17 @@ class cartController extends base_controller {
               include: [
                 {
                   model: bricks_model,
+                  where: {
+                    [Op.or]: [
+                      {
+                        buyer_id: null,
+                      },
+                      {
+                        buyer_id: user.id,
+                      },
+                    ],
+                  },
+
                   include: [
                     {
                       model: property_model,
@@ -40,6 +52,64 @@ class cartController extends base_controller {
         })
         .then((cart) => {
           res.status(200).send(cart);
+        });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).send("There was a problem in the cart controller.");
+    }
+  }
+
+  get_final_cart(req, res) {
+    //This returns the cart afther checkout, this will delete all the bricks
+    //that are not available for the user to buy
+    try {
+      const user = req.user;
+      this.user_model
+        .findOne({
+          where: {
+            id: user.id,
+          },
+          include: [
+            {
+              model: this.inUserCartModel,
+              include: [
+                {
+                  model: bricks_model,
+                  where: {
+                    [Op.or]: [
+                      {
+                        buyer_id: null,
+                      },
+                      {
+                        buyer_id: user.id,
+                      },
+                    ],
+                  },
+
+                  include: [
+                    {
+                      model: property_model,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        })
+        .then((cart) => {
+          const cart_items = cart.in_user_carts;
+          let shaved_cart = [];
+          cart_items.forEach((item) => {
+            if (
+              item.brick.buyer_id === null &&
+              item.brick.buyer_id === user.id
+            ) {
+              item.destroy();
+            } else {
+              shaved_cart.push(item);
+            }
+          });
+          res.status(200).send(shaved_cart);
         });
     } catch (err) {
       logger.error(err);
@@ -287,6 +357,7 @@ class cartController extends base_controller {
             const cart_items = cart.in_user_carts;
             cart_items.forEach((item) => {
               item.brick.on_sale = 0;
+              item.brick.buyer_id = user.id;
               item.brick.save();
             });
             //job after 3 minutes
@@ -320,6 +391,7 @@ class cartController extends base_controller {
                   });
                   cart_items.forEach((item) => {
                     item.brick.on_sale = 1;
+                    item.brick.buyer_id = null;
                     item.brick.save();
                   });
                   scheduler.removeById(user.id);

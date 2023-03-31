@@ -1,29 +1,60 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../css/shoppingcart.css";
 
-function ShoppingCart({ cartItems = [], setCartItems }) {
+function ShoppingCart({ cartItems, setCartItems }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const response = axios.get("//localhost:7080/cart", {
-      headers: {
-        Authorization: `${localStorage.getItem("token")}`,
-      },
-    });
-    response
+    axios
+      .get("//localhost:7080/cart", {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
       .then((response) => {
         setCartItems(response.data.in_user_carts);
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+      .catch((error) => {});
+  }, [setCartItems]);
+
+  const handleCheckout = () => {
+    if (agreedToTerms) {
+      // Call API to process order and navigate to confirmation page
+      axios
+        .post(
+          "//localhost:7080/cart/checkout",
+          {
+            ts: "Y",
+          },
+          {
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        )
+        .then(() => {
+          navigate("/confirmation");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      alert("Please agree to the terms of service before checking out.");
+    }
+  };
+
+  const handleAgreedToTerms = () => {
+    setAgreedToTerms(!agreedToTerms);
+  };
 
   const handleRemoveItem = (itemId) => {
     axios
       .delete(`//localhost:7080/cart/item/${itemId}`, {
-        //TODO REMOVE ITEMS FROM CART
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
@@ -69,6 +100,23 @@ function ShoppingCart({ cartItems = [], setCartItems }) {
           )}
         </ul>
       )}
+      <div className="shopping-cart__terms">
+        <label>
+          <input
+            type="checkbox"
+            checked={agreedToTerms}
+            onChange={handleAgreedToTerms}
+          />
+          I agree to the terms of service.
+        </label>
+      </div>
+      <button
+        className="shopping-cart__checkout-button"
+        onClick={handleCheckout}
+        disabled={!agreedToTerms}
+      >
+        Checkout
+      </button>
     </div>
   );
 }
