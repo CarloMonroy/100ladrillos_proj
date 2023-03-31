@@ -1,7 +1,5 @@
-import axios from "axios";
-import { useState } from "react";
+import React from "react";
 import "../css/properties.css";
-const querystring = require("querystring");
 
 function PropertiesComponent({ onAddToCart, properties }) {
   return (
